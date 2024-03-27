@@ -45,7 +45,7 @@ public class GlHelper {
     }
 
     public static final ResourceLocation PRELOAD_FONT_TEXTURE =
-            new ResourceLocation(ResourcePackUpdater.MOD_ID, "textures/font/roboto.png");
+            new ResourceLocation(ResourcePackUpdater.MOD_ID, "textures/font/harmony.png");
     public static final SimpleFont preloadFont = new SimpleFont(PRELOAD_FONT_TEXTURE);
 
     private static BufferBuilder bufferBuilder;
