@@ -31,7 +31,7 @@ public class SelectSourceForm implements GlScreenForm {
         GlScreenForm.drawShadowRect(selectSourceFormWidth, selectSourceFormHeight, 0xffdee6ea);
 
         GlHelper.drawString(20, 15, selectSourceFormWidth - 40, 50, 18,
-                "Select a Server to Download Resource Pack from\nDon't worry, you can later get back and try another one.", 0xff222222, false, false);
+                "选择从哪个下载源下载服务器资源包\n别担心，稍后你可以回到这里，以便尝试另一个。", 0xff222222, false, false);
 
         for (int i = 0; i < sourceSize; i++) {
             if (i == selectedIndex) {
@@ -44,7 +44,7 @@ public class SelectSourceForm implements GlScreenForm {
                     btnLabel, 0xff222222, false, false);
         }
 
-        String escBtnHint = "W/S: Select, Enter: Confirm";
+        String escBtnHint = "方向键选择，ENTER 键确认";
         GlHelper.drawString(20, selectSourceFormHeight - 20, selectSourceFormWidth - 40, 16, 16, escBtnHint, 0xff222222, false, true);
 
         GlHelper.end();
