@@ -21,13 +21,13 @@ public class ExceptionForm implements GlScreenForm {
 
         if (exception != null) {
             GlHelper.drawShadowString(20, 20, GlHelper.getWidth() - 40, LINE_HEIGHT, FONT_SIZE,
-                    "There was an error! Please report.",
+                    "发生错误！请报告管理员。",
                     0xFFFF0000, false, true);
         }
-        GlHelper.drawShadowString(GlHelper.getWidth() - 240 - 20, 20, 240, 16, 16, "Arrow Keys to Scroll", 0xffdddddd, false, true);
+        GlHelper.drawShadowString(GlHelper.getWidth() - 240 - 20, 20, 240, 16, 16, "用方向键滚动查看", 0xffdddddd, false, true);
         int fontColor = System.currentTimeMillis() % 400 >= 200 ? 0xffffff00 : 0xffdddddd;
         GlHelper.drawShadowString(20, 20 + LINE_HEIGHT, GlHelper.getWidth() - 40, LINE_HEIGHT, FONT_SIZE,
-                "Press ENTER to continue without the resource pack.",
+                "按 ENTER 以在不加载资源包的情况下继续启动。",
                 fontColor, false, true);
 
         final int LOG_FONT_SIZE = 16;
