@@ -20,7 +20,7 @@ public class SimpleFont {
     public final float baseLineYPl;
 
     public final Char2ObjectMap<GlyphProperty> glyphMap = new Char2ObjectOpenHashMap<>();
-    private static final char REPLACEMENT_CHAR = '▯';
+    private static final char REPLACEMENT_CHAR = '�';
 
     public final ResourceLocation textureLocation;
     public final float whiteU, whiteV;
