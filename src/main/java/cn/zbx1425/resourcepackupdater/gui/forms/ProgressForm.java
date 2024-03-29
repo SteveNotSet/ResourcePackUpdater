@@ -25,10 +25,10 @@ public class ProgressForm implements GlScreenForm {
 
         float barBegin = 30;
         float usableBarWidth = progressFormWidth - barBegin - 30;
-        GlHelper.blit(barBegin, 70, usableBarWidth, 30, 0x4446ddb9);
-        GlHelper.blit(barBegin, 70, usableBarWidth * primaryProgress, 30, 0xff46ddb9);
-        GlHelper.drawString(barBegin + usableBarWidth * primaryProgress, 70 + 10, 80, LINE_HEIGHT, 16,
-                String.format("%d%%", Math.round(primaryProgress * 100)), 0xff46ddb9, false, true);
+        GlHelper.blit(barBegin, 70, usableBarWidth, 30, 0xff1bbbb9);
+        GlHelper.blit(barBegin, 70, usableBarWidth * primaryProgress, 30, 0xff00a99d);
+        GlHelper.drawString(progressFormWidth / 2 - 32, 70 + 10, 80, LINE_HEIGHT, 16,
+                String.format("%d%%", Math.round(primaryProgress * 100)), 0xffffffff, false, true);
 
         /*
         GlHelper.blit(barBegin, 110, usableBarWidth, 30, 0x4449baee);
