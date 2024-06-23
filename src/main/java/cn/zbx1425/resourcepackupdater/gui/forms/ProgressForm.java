@@ -8,11 +8,11 @@ import net.minecraft.client.Minecraft;
 public class ProgressForm implements GlScreenForm {
 
     private String primaryInfo = "";
-    private String auxilaryInfo = "";
+    private String auxiliaryInfo = "";
     private float primaryProgress;
     private String secondaryProgress;
 
-    private static final float progressFormWidth = 600, progressFormHeight = 240;
+    private static final float progressFormWidth = 600, progressFormHeight = 250;
 
     @Override
     public void render() {
@@ -20,15 +20,24 @@ public class ProgressForm implements GlScreenForm {
         GlHelper.begin(GlHelper.PRELOAD_FONT_TEXTURE);
         GlScreenForm.drawShadowRect(progressFormWidth, progressFormHeight, 0xffdee6ea);
 
-        GlHelper.drawString(20, 20, progressFormWidth - 40, 50, 20,
-                primaryInfo, 0xff222222, false, false);
-
-        float barBegin = 30;
-        float usableBarWidth = progressFormWidth - barBegin - 30;
-        GlHelper.blit(barBegin, 70, usableBarWidth, 30, 0xff1bbbb9);
-        GlHelper.blit(barBegin, 70, usableBarWidth * primaryProgress, 30, 0xff00a99d);
-        GlHelper.drawString(progressFormWidth / 2 - 32, 70 + 10, 80, LINE_HEIGHT, 16,
+        float barBegin = 0;
+        float usableBarWidth = progressFormWidth - barBegin - 0;
+        float progressTextStart = progressFormWidth / 2 - GlHelper.getStringWidth("88%", 16) / 2;
+        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0x4435aa8e);
+        GlHelper.drawString(progressTextStart, 0 + 10, 80, LINE_HEIGHT, 16,
+                String.format("%d%%", Math.round(primaryProgress * 100)), 0xff328a75, false, true);
+        GlHelper.end();
+        GlHelper.begin(GlHelper.PRELOAD_FONT_TEXTURE);
+        GlHelper.enableScissor(0, 0, usableBarWidth * primaryProgress, 30);
+        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0xff35aa8e);
+        GlHelper.drawString(progressTextStart, 0 + 10, 80, LINE_HEIGHT, 16,
                 String.format("%d%%", Math.round(primaryProgress * 100)), 0xffffffff, false, true);
+        GlHelper.end();
+        GlHelper.begin(GlHelper.PRELOAD_FONT_TEXTURE);
+        GlHelper.disableScissor();
+
+        GlHelper.drawString(20, 45, progressFormWidth - 40, 50, 20,
+                primaryInfo, 0xff222222, false, false);
 
         /*
         GlHelper.blit(barBegin, 110, usableBarWidth, 30, 0x4449baee);
@@ -37,12 +46,15 @@ public class ProgressForm implements GlScreenForm {
                 String.format("%d%%", Math.round(secondaryProgress * 100)), 0xff49baee, false, true);
         */
 
-        GlHelper.drawString(barBegin, 110, usableBarWidth, 170 - 110, 16,
-                secondaryProgress, 0xff222222, false, false);
+        if (secondaryProgress.contains("\n")) {
+            GlHelper.blit(0, 70, progressFormWidth, 185 - 70, 0x3399abab);
+        }
+        GlHelper.drawString(20, 80, progressFormWidth - 40, 180 - 80, 16,
+                secondaryProgress, 0xff222222, false, true);
 
-        boolean monospace = !auxilaryInfo.isEmpty() && auxilaryInfo.charAt(0)== ':';
-        GlHelper.drawString(20, 180, progressFormWidth - 40, 30, 18,
-                monospace ? auxilaryInfo.substring(1) : auxilaryInfo, 0xff222222, monospace, false);
+        boolean monospace = !auxiliaryInfo.isEmpty() && auxiliaryInfo.charAt(0)== ':';
+        GlHelper.drawString(20, 195, progressFormWidth - 40, 30, 18,
+                monospace ? auxiliaryInfo.substring(1) : auxiliaryInfo, 0xff222222, monospace, false);
 
         String escBtnHint = ResourcePackUpdater.CONFIG.sourceList.value.size() > 1 ? "取消下载 / 使用另一下载源" : "取消下载";
         GlHelper.drawString(20, progressFormHeight - 20, progressFormWidth - 40, 16, 16, escBtnHint + ": 按住 ESC", 0xff222222, false, true);
@@ -61,7 +73,7 @@ public class ProgressForm implements GlScreenForm {
     @Override
     public void reset() {
         primaryInfo = "";
-        auxilaryInfo = "";
+        auxiliaryInfo = "";
         primaryProgress = 0;
         secondaryProgress = "";
     }
@@ -84,7 +96,7 @@ public class ProgressForm implements GlScreenForm {
     @Override
     public void setInfo(String secondary, String textValue) throws GlHelper.MinecraftStoppingException {
         this.secondaryProgress = secondary;
-        this.auxilaryInfo = textValue;
+        this.auxiliaryInfo = textValue;
     }
 
     @Override

@@ -5,10 +5,13 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class GlHelper {
 
@@ -45,7 +48,7 @@ public class GlHelper {
     }
 
     public static final ResourceLocation PRELOAD_FONT_TEXTURE =
-            new ResourceLocation(ResourcePackUpdater.MOD_ID, "textures/font/harmony.png");
+            new ResourceLocation(ResourcePackUpdater.MOD_ID, "textures/font/cantarell.png");
     public static final SimpleFont preloadFont = new SimpleFont(PRELOAD_FONT_TEXTURE);
 
     private static BufferBuilder bufferBuilder;
@@ -108,7 +111,9 @@ public class GlHelper {
             } else if (chr == '\r') {
                 // Ignore CR
             } else if (chr == '\t') {
-                x += (preloadFont.spaceWidthPl * 4 + CHAR_SPACING) * fontSize;
+                // Align to 8 spaces
+                float alignToPixels = (preloadFont.spaceWidthPl + CHAR_SPACING) * 8 * fontSize;
+                x = (float) (Math.ceil((x - x1) / alignToPixels) * alignToPixels + x1);
             } else if (chr == ' ') {
                 x += (preloadFont.spaceWidthPl + CHAR_SPACING) * fontSize;
             } else {
@@ -135,6 +140,31 @@ public class GlHelper {
         }
     }
 
+    public static float getStringWidth(String text, float fontSize) {
+        float CHAR_SPACING = 0f;
+
+        float width = 0;
+        float x = 0;
+        for (char chr : text.toCharArray()) {
+            if (chr == '\n') {
+                width = Math.max(width, x);
+                x = 0;
+            } else if (chr == '\r') {
+                // Ignore CR
+            } else if (chr == '\t') {
+                // Align to 8 spaces
+                float alignToPixels = (preloadFont.spaceWidthPl + CHAR_SPACING) * 8 * fontSize;
+                x = (float) (Math.ceil(x / alignToPixels) * alignToPixels);
+            } else if (chr == ' ') {
+                x += (preloadFont.spaceWidthPl + CHAR_SPACING) * fontSize;
+            } else {
+                SimpleFont.GlyphProperty glyph = preloadFont.getGlyph(chr);
+                x += glyph.advancePl * fontSize + CHAR_SPACING * fontSize;
+            }
+        }
+        return Math.max(width, x);
+    }
+
     public static void setMatIdentity() {
         RenderSystem.getModelViewStack().setIdentity();
     }
@@ -157,6 +187,23 @@ public class GlHelper {
         matrix.multiply(Matrix4f.createTranslateMatrix(-0.5f, -0.5f, 0));
         matrix.multiply(Matrix4f.createScaleMatrix(1f / getWidth(), 1f / getHeight(), 1));
         RenderSystem.setProjectionMatrix(matrix);
+    }
+
+    public static void enableScissor(float x, float y, float width, float height) {
+        Matrix4f posMap = RenderSystem.getProjectionMatrix();
+        Vector4f bottomLeft = new Vector4f(x, y + height, 0, 1);
+        bottomLeft.transform(posMap);
+        Vector4f topRight = new Vector4f(x + width, y, 0, 1);
+        topRight.transform(posMap);
+        float x1 = (float)Mth.map(bottomLeft.x(), -1, 1, 0, Minecraft.getInstance().getWindow().getWidth());
+        float y1 = (float)Mth.map(bottomLeft.y(), -1, 1, 0, Minecraft.getInstance().getWindow().getHeight());
+        float x2 = (float)Mth.map(topRight.x(), -1, 1, 0, Minecraft.getInstance().getWindow().getWidth());
+        float y2 = (float)Mth.map(topRight.y(), -1, 1, 0, Minecraft.getInstance().getWindow().getHeight());
+        RenderSystem.enableScissor((int)x1, (int)y1, (int)(x2 - x1), (int)(y2 - y1));
+    }
+
+    public static void disableScissor() {
+        RenderSystem.disableScissor();
     }
 
     public static int getWidth() {

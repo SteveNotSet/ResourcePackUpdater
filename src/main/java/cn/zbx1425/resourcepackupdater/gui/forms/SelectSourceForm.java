@@ -39,7 +39,7 @@ public class SelectSourceForm implements GlScreenForm {
             } else {
                 GlHelper.blit(30, 30 + 30 + i * 40, selectSourceFormWidth - 60, 30, 0xffc0d2db);
             }
-            String btnLabel = i == sourceSize - 1 ? "[Cancel Update]" : ResourcePackUpdater.CONFIG.sourceList.value.get(i).name;
+            String btnLabel = i == sourceSize - 1 ? "[取消更新]" : ResourcePackUpdater.CONFIG.sourceList.value.get(i).name;
             GlHelper.drawString(30 + 15, 30 + 30 + i * 40 + 5, selectSourceFormWidth - 90, 40, 20,
                     btnLabel, 0xff222222, false, false);
         }

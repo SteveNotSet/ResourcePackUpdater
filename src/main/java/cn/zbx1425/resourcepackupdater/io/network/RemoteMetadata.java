@@ -93,7 +93,7 @@ public class RemoteMetadata {
                     if (retryCount < MAX_RETRIES) {
                         cb.printLog(ex.toString());
                         retryCount++;
-                        cb.printLog(String.format("Retrying (%d/%d) ...", retryCount, MAX_RETRIES));
+                        cb.printLog(String.format("第（%d/%d）次重试……", retryCount, MAX_RETRIES));
                     } else {
                         throw ex;
                     }
@@ -110,8 +110,8 @@ public class RemoteMetadata {
     public void endDownloads(ProgressReceiver cb) throws IOException {
         long elapsedTimeSecs = (System.currentTimeMillis() - downloadStartTime) / 1000;
         long speedKibPS = elapsedTimeSecs == 0 ? 0 : downloadedBytes / elapsedTimeSecs / 1024;
-        cb.setInfo("", String.format("%.2f MiB in %02d:%02d, Average speed %d KiB/s",
-                downloadedBytes * 1f / 1024 / 1024, elapsedTimeSecs / 60, elapsedTimeSecs % 60, speedKibPS));
+        cb.setInfo("", String.format("用了 %02d:%02d 下载了 %.2f MiB ，平均速率 %d KiB/s",
+                elapsedTimeSecs / 60, elapsedTimeSecs % 60, downloadedBytes * 1f / 1024 / 1024, speedKibPS));
     }
 
     private void urlToStream(URL url, long expectedSize, OutputStream target, ProgressReceiver cb) throws IOException {
@@ -140,7 +140,7 @@ public class RemoteMetadata {
                                 cb.setProgress(amountOfBytesWritten * 1f / fileSize, 0);
                                 cb.setInfo(String.format("%.2f%%", amountOfBytesWritten * 1f / fileSize * 100), message);
                             } else {
-                                String message = String.format(": %5d KiB downloaded; %5d KiB/s",
+                                String message = String.format(": %5d KiB 已下载; %5d KiB/s",
                                         amountOfBytesWritten / 1024, elapsedTimeSecs == 0 ? 0 : downloadedBytes / elapsedTimeSecs / 1024);
                                 cb.setProgress((System.currentTimeMillis() % 1000) / 1000f, 0);
                                 cb.setInfo(String.format("%.2f%%", (System.currentTimeMillis() % 1000) / 1000f * 100), message);

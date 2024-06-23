@@ -70,7 +70,8 @@ public class ResourcePackUpdater implements ModInitializer {
 
         while (true) {
             Dispatcher syncDispatcher = new Dispatcher();
-            if (ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
+            if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
+                || ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
                 if (ResourcePackUpdater.CONFIG.sourceList.value.size() > 1) {
                     ResourcePackUpdater.GL_PROGRESS_SCREEN.resetToSelectSource();
                     try {
@@ -85,6 +86,12 @@ public class ResourcePackUpdater implements ModInitializer {
                 } else if (ResourcePackUpdater.CONFIG.sourceList.value.size() == 1) {
                     ResourcePackUpdater.CONFIG.selectedSource.value = ResourcePackUpdater.CONFIG.sourceList.value.get(0);
                     ResourcePackUpdater.CONFIG.selectedSource.isFromLocal = true;
+                } else {
+                    ResourcePackUpdater.CONFIG.selectedSource.value = new Config.SourceProperty(
+                            "NOT CONFIGURED",
+                            "",
+                            false, false, true
+                    );
                 }
             }
 

@@ -15,7 +15,7 @@ public class MtrVersion implements Comparable<MtrVersion> {
     public static MtrVersion parse(String src) {
         ArrayList<Integer> parts = new ArrayList<>();
         String[] strParts = src.split("-");
-        for (int i = 1; i < strParts.length; i++) {
+        for (int i = (strParts.length > 1 ? 1 : 0); i < strParts.length; i++) {
             String[] subParts = strParts[i].split("\\.");
             for (String subPart : subParts) {
                 if (subPart.matches("\\d+")) {
@@ -46,7 +46,7 @@ public class MtrVersion implements Comparable<MtrVersion> {
             case '<':
                 return this.compareTo(MtrVersion.parse(criteria.substring(1))) < 0;
             default:
-                return this.compareTo(MtrVersion.parse(criteria.substring(1))) >= 0;
+                return this.compareTo(MtrVersion.parse(criteria)) >= 0;
         }
     }
 }
