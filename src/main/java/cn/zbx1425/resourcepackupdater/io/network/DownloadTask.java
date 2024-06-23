@@ -85,7 +85,7 @@ public class DownloadTask {
          */
 
         HttpRequest httpRequest = HttpRequest.newBuilder(requestUri)
-                .timeout(Duration.ofSeconds(10))
+                .timeout(Duration.ofSeconds(20))
                 .setHeader("User-Agent", "ResourcePackUpdater/" + ResourcePackUpdater.MOD_VERSION + " +https://www.zbx1425.cn")
                 .setHeader("Accept-Encoding", "gzip")
                 .GET()

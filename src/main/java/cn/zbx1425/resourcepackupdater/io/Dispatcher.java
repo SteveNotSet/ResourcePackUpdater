@@ -115,7 +115,7 @@ public class Dispatcher {
             while (!downloadDispatcher.tasksFinished()) {
                 downloadDispatcher.updateSummary();
                 ((GlProgressScreen)cb).redrawScreen(true);
-                Thread.sleep(250);
+                Thread.sleep(1000 / 30);
             }
             remoteMetadata.downloadedBytes += downloadDispatcher.downloadedBytes;
             downloadDispatcher.close();

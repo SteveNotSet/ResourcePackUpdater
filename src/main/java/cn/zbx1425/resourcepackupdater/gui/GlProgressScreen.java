@@ -32,6 +32,12 @@ public class GlProgressScreen implements ProgressReceiver {
     }
 
     @Override
+    public void printLogOutsidePolling(String line) throws GlHelper.MinecraftStoppingException {
+        for (GlScreenForm form : forms) form.printLog(line);
+        ResourcePackUpdater.LOGGER.info(line);
+    }
+
+    @Override
     public void amendLastLog(String postfix) throws GlHelper.MinecraftStoppingException {
         for (GlScreenForm form : forms) form.amendLastLog(postfix);
         redrawScreen(true);

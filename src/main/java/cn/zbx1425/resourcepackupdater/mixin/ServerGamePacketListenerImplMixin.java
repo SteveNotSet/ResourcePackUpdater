@@ -45,7 +45,7 @@ public abstract class ServerGamePacketListenerImplMixin {
             ci.cancel();
         } else if (identifier.equals(ClientboundCustomPayloadPacket.BRAND)) {
             if (((RPUClientVersionSupplier)player).getRPUClientVersion() == null && ResourcePackUpdater.CONFIG.clientEnforceInstall.value) {
-                disconnect(Text.literal(new MismatchingVersionException(ResourcePackUpdater.MOD_VERSION, "N/A").getMessage().trim()));
+                disconnect(Text.literal(new MismatchingVersionException(ResourcePackUpdater.MOD_VERSION, "未安裝 NOT INSTALLED").getMessage().trim()));
                 ci.cancel();
             }
         }

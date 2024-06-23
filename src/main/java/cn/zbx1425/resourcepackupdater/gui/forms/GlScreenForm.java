@@ -18,4 +18,8 @@ public interface GlScreenForm extends ProgressReceiver {
         GlHelper.blit(8, 8, width, height, 0x66000000);
         GlHelper.blit(0, 0, width, height, color);
     }
+
+    default void printLogOutsidePolling(String line) {
+
+    }
 }

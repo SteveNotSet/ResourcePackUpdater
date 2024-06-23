@@ -75,13 +75,13 @@ public class ServerLockRegistry {
         }
 
         if (localServerLock == null) {
-            ResourcePackUpdater.LOGGER.info("Asset coordination not required by this pack.");
+            ResourcePackUpdater.LOGGER.info("Asset coordination not required.");
         } else if (remoteServerLock == null) {
-            ResourcePackUpdater.LOGGER.info("Asset coordination identifier not received.");
+            ResourcePackUpdater.LOGGER.info("Asset coordination received no cooperation.");
         } else if (!remoteServerLock.equals(localServerLock)) {
-            ResourcePackUpdater.LOGGER.info("Asset coordination identifier differs.");
+            ResourcePackUpdater.LOGGER.info("Asset coordination received discrepancy.");
         } else if (lockAllSyncedPacks) {
-            ResourcePackUpdater.LOGGER.info("Asset coordination is unavailable due to incomplete synchronization.");
+            ResourcePackUpdater.LOGGER.info("Asset coordination is unavailable for incompleteness.");
         } else {
             ResourcePackUpdater.LOGGER.info("Asset coordination is applicable.");
         }

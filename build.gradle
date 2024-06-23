@@ -2,7 +2,7 @@ import groovy.json.JsonSlurper
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'fabric-loom' version '1.7-SNAPSHOT'
     id "de.undercouch.download" version "4.1.2"
     id 'maven-publish'
 }
@@ -67,7 +67,9 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    modApi "com.terraformersmc:modmenu:${project.mod_menu_version}"
+    modImplementation ("com.terraformersmc:modmenu:${project.mod_menu_version}") {
+        transitive = false
+    }
 }
 
 processResources {
