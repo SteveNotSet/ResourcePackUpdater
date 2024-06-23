@@ -103,7 +103,7 @@ public class ExceptionForm implements GlScreenForm {
     public void setException(Exception exception) throws GlHelper.MinecraftStoppingException {
         this.exception = exception;
         printLog("");
-        printLog("Update failed with this exception: ");
+        printLog("因以下异常，无法更新：");
         for (String line : exception.toString().split("\n")) {
             printLog(line);
         }
