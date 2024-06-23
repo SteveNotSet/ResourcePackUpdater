@@ -22,14 +22,14 @@ public class ProgressForm implements GlScreenForm {
 
         float barBegin = 0;
         float usableBarWidth = progressFormWidth - barBegin - 0;
-        float progressTextStart = progressFormWidth / 2 - GlHelper.getStringWidth("88%", 16) / 2;
-        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0x4435aa8e);
+        float progressTextStart = progressFormWidth / 2 - GlHelper.getStringWidth(String.format("%d%%", Math.round(primaryProgress * 100)), 16) / 2;
+        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0x4400a99d);
         GlHelper.drawString(progressTextStart, 0 + 10, 80, LINE_HEIGHT, 16,
-                String.format("%d%%", Math.round(primaryProgress * 100)), 0xff328a75, false, true);
+                String.format("%d%%", Math.round(primaryProgress * 100)), 0xff00a99d, false, true);
         GlHelper.end();
         GlHelper.begin(GlHelper.PRELOAD_FONT_TEXTURE);
         GlHelper.enableScissor(0, 0, usableBarWidth * primaryProgress, 30);
-        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0xff35aa8e);
+        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0xff00a99d);
         GlHelper.drawString(progressTextStart, 0 + 10, 80, LINE_HEIGHT, 16,
                 String.format("%d%%", Math.round(primaryProgress * 100)), 0xffffffff, false, true);
         GlHelper.end();

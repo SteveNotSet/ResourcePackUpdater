@@ -135,12 +135,12 @@ public class RemoteMetadata {
                             downloadedBytes += (amountOfBytesWritten - lastAmount);
                             long elapsedTimeSecs = (System.currentTimeMillis() - downloadStartTime) / 1000;
                             if (fileSize > 0) {
-                                String message = String.format(": %5d KiB / %5d KiB; %5d KiB/s",
+                                String message = String.format(": %d KiB / %d KiB; %d KiB/s",
                                         amountOfBytesWritten / 1024, fileSize / 1024, elapsedTimeSecs == 0 ? 0 : downloadedBytes / elapsedTimeSecs / 1024);
                                 cb.setProgress(amountOfBytesWritten * 1f / fileSize, 0);
                                 cb.setInfo(String.format("%.2f%%", amountOfBytesWritten * 1f / fileSize * 100), message);
                             } else {
-                                String message = String.format(": %5d KiB 已下载; %5d KiB/s",
+                                String message = String.format(": %d KiB 已下载; %d KiB/s",
                                         amountOfBytesWritten / 1024, elapsedTimeSecs == 0 ? 0 : downloadedBytes / elapsedTimeSecs / 1024);
                                 cb.setProgress((System.currentTimeMillis() % 1000) / 1000f, 0);
                                 cb.setInfo(String.format("%.2f%%", (System.currentTimeMillis() % 1000) / 1000f * 100), message);

@@ -91,15 +91,15 @@ public class DownloadDispatcher {
             lastSummaryTime = currentTime;
             lastSummaryBytes = downloadedBytes;
         }
-        String message = String.format(": % 5.2f MiB / % 5.2f MiB; %5d KiB/s",
+        String message = String.format(": %.2f MiB / %.2f MiB; %d KiB/s",
                 downloadedBytes / 1048576.0, totalBytes / 1048576.0, summaryBytesPerSecond / 1024);
         progressReceiver.setProgress(downloadedBytes * 1f / totalBytes, 0);
 
         String runningProgress = "剩余 " + incompleteTasks.size() + " 个文件\n" +
                 String.join("\n", runningTasks.stream()
-                .map(task -> "  " + (
+                .map(task -> " " + (
                     task.totalBytes == 0 ? "等待" :
-                        String.format("%.1f%%", task.downloadedBytes * 100f / task.totalBytes)
+                        (task.downloadedBytes <= 0.9995 ? String.format("%.1f%%", task.downloadedBytes * 100f / task.totalBytes) : "100%")
                 ) + "\t"
                 + (task.failedAttempts > 0 ? "（第 " + task.failedAttempts + "次重试）" : "")
                 + task.fileName)

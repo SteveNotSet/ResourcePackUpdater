@@ -62,7 +62,7 @@ public class Dispatcher {
 
             if (localMetadata.files.size() < 1) {
                 cb.printLog("正在下载来自远程服务器的资源包。");
-                cb.printLog("坐下来喝杯茶等一会吧。");
+                cb.printLog("这是第一次下载。坐下来喝杯茶等一会吧。");
             }
             if (remoteChecksum != null) {
                 if (Arrays.equals(localChecksum, remoteChecksum)) {
@@ -85,9 +85,9 @@ public class Dispatcher {
             List<String> filesToCreate = localMetadata.getFilesToCreate(remoteMetadata);
             List<String> filesToUpdate = localMetadata.getFilesToUpdate(remoteMetadata);
             List<String> filesToDelete = localMetadata.getFilesToDelete(remoteMetadata);
-            cb.printLog(String.format("找到了 %-3d 个新目录、%-3d 个要删除的目录。",
+            cb.printLog(String.format("找到了 %d 个新目录、%d 个要删除的目录。",
                     dirsToCreate.size(), dirsToDelete.size()));
-            cb.printLog(String.format("找到了 %-3d 个新文件、%-3d 个要修改的文件、%-3d 个要删除的文件。",
+            cb.printLog(String.format("找到了 %d 个新文件、%d 个要修改的文件、%d 个要删除的文件。",
                     filesToCreate.size(), filesToUpdate.size(), filesToDelete.size()));
 
             cb.printLog("正在创建或删除需要的目录……");
