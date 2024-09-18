@@ -47,13 +47,13 @@ public class PackOutputStream extends OutputStream {
     public void close() throws IOException {
         if (closed) return;
         closed = true;
-        if (encrypt) {
-            AssetEncryption.writeEncrypted(buffer.toByteArray(), target.toFile());
-        } else {
+        // if (encrypt) {
+        //     AssetEncryption.writeEncrypted(buffer.toByteArray(), target.toFile());
+        // } else {
             try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(target.toFile()))) {
                 bos.write(buffer.toByteArray());
             }
-        }
+        // }
         byte[] localSha = hashCache.getDigestNoCache(target.toFile());
         if (!Arrays.equals(localSha, expectedSha)) {
             throw new IOException("SHA1 mismatch: " + Hex.encodeHexString(localSha) + " downloaded, " +
