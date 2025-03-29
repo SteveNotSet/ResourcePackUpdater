@@ -39,13 +39,20 @@ public class RemoteMetadata {
 
     public byte[] fetchDirChecksum(ProgressReceiver cb) throws Exception {
         String metaString = httpGetString(baseUrl + "/metadata.sha1", cb);
-        if (metaString.startsWith("{")) {
-            JsonObject metadataObj = ResourcePackUpdater.JSON_PARSER.parse(metaString).getAsJsonObject();
-            assertMetadataVersion(metadataObj);
-            if (metadataObj.has("encrypt")) encrypt = metadataObj.get("encrypt").getAsBoolean();
-            return Hex.decodeHex(metadataObj.get("sha1").getAsString().toCharArray());
-        } else {
-            return Hex.decodeHex(metaString.trim().toCharArray());
+        try {
+            if (metaString.startsWith("{")) {
+                JsonObject metadataObj = ResourcePackUpdater.JSON_PARSER.parse(metaString).getAsJsonObject();
+                assertMetadataVersion(metadataObj);
+                if (metadataObj.has("encrypt")) encrypt = metadataObj.get("encrypt").getAsBoolean();
+                return Hex.decodeHex(metadataObj.get("sha1").getAsString().toCharArray());
+            } else {
+                return Hex.decodeHex(metaString.trim().toCharArray());
+            }
+        } catch (Exception e) {
+            cb.printLog("Cannot decode metadata.sha1. This is the metadata string I have got:");
+            cb.printLog(metaString);
+            cb.printLog("Metadata string ends here.");
+            throw e;
         }
     }
 
