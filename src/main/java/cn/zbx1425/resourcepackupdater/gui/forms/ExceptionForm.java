@@ -21,13 +21,13 @@ public class ExceptionForm implements GlScreenForm {
 
         if (exception != null) {
             GlHelper.drawShadowString(20, 20, GlHelper.getWidth() - 40, LINE_HEIGHT, FONT_SIZE,
-                    "发生错误！请报告管理员。",
+                    "发生错误了喵！请报告管理员喵。",
                     0xFFFF0000, false, true);
         }
         GlHelper.drawShadowString(GlHelper.getWidth() - 240 - 20, 20, 240, 16, 16, "用方向键滚动查看", 0xffdddddd, false, true);
         int fontColor = System.currentTimeMillis() % 400 >= 200 ? 0xffffff00 : 0xffdddddd;
         GlHelper.drawShadowString(20, 20 + LINE_HEIGHT, GlHelper.getWidth() - 40, LINE_HEIGHT, FONT_SIZE,
-                "按 ENTER 以在不加载资源包的情况下继续启动。",
+                "按 ENTER 以在不加载资源包的情况下继续启动喵。",
                 fontColor, false, true);
 
         final int LOG_FONT_SIZE = 16;
@@ -103,7 +103,7 @@ public class ExceptionForm implements GlScreenForm {
     public void setException(Exception exception) throws GlHelper.MinecraftStoppingException {
         this.exception = exception;
         printLog("");
-        printLog("因以下异常，无法更新：");
+        printLog("因以下异常，无法更新喵：");
         for (String line : exception.toString().split("\n")) {
             printLog(line);
         }

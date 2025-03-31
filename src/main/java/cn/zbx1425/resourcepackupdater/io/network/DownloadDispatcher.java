@@ -45,7 +45,7 @@ public class DownloadDispatcher {
                         task.runBlocking(target.get());
                         if (task.failedAttempts > 0) {
                             delayedProgresses.add(() -> {
-                                progressReceiver.printLogOutsidePolling(String.format("正在下载文件……（第 %d 次尝试）",
+                                progressReceiver.printLogOutsidePolling(String.format("正在下载文件喵……（第 %d 次尝试）",
                                         task.failedAttempts));
                             });
                         }
@@ -54,9 +54,9 @@ public class DownloadDispatcher {
                         task.failedAttempts++;
                         if (task.failedAttempts < MAX_RETRIES) {
                             delayedProgresses.add(() -> {
-                                progressReceiver.printLogOutsidePolling(String.format("因以下错误，%s 将进行第（%d/%d）次尝试：",
+                                progressReceiver.printLogOutsidePolling(String.format("因以下错误，%s 将进行第（%d/%d）次尝试喵：",
                                         task.fileName, task.failedAttempts, MAX_RETRIES));
-                                progressReceiver.printLogOutsidePolling(String.format("第 %d 次重试：%s", task.failedAttempts, ex.toString()));
+                                progressReceiver.printLogOutsidePolling(String.format("第 %d 次重试了喵：%s", task.failedAttempts, ex.toString()));
                             });
                         } else {
                             throw ex;
@@ -95,13 +95,13 @@ public class DownloadDispatcher {
                 downloadedBytes / 1048576.0, totalBytes / 1048576.0, summaryBytesPerSecond / 1024);
         progressReceiver.setProgress(downloadedBytes * 1f / totalBytes, 0);
 
-        String runningProgress = "剩余 " + incompleteTasks.size() + " 个文件\n" +
+        String runningProgress = "剩余 " + incompleteTasks.size() + " 个文件喵\n" +
                 String.join("\n", runningTasks.stream()
                 .map(task -> " " + (
-                    task.totalBytes == 0 ? "等待" :
+                    task.totalBytes == 0 ? "等待喵" :
                         (task.downloadedBytes <= 0.9995 ? String.format("%.1f%%", task.downloadedBytes * 100f / task.totalBytes) : "100%")
                 ) + "\t"
-                + (task.failedAttempts > 0 ? "（第 " + task.failedAttempts + "次重试）" : "")
+                + (task.failedAttempts > 0 ? "（第 " + task.failedAttempts + "次重试喵）" : "")
                 + task.fileName)
                 .toList());
         progressReceiver.setInfo(runningProgress, message);
