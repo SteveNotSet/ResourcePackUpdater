@@ -31,7 +31,7 @@ jobs:
       - name: Capture release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ResourcePackUpdater-${{ matrix.minecraft }}
+          name: ResourcePackUpdaterMeow-${{ matrix.minecraft }}
           path: |
             build/libs/*.jar
             !build/libs/*-sources.jar
@@ -43,5 +43,5 @@ jobs:
       - name: Merge artifacts
         uses: actions/upload-artifact/merge@v4
         with:
-          name: ResourcePackUpdater-All
-          pattern: ResourcePackUpdater-*
+          name: ResourcePackUpdaterMeow-All
+          pattern: ResourcePackUpdaterMeow-*
