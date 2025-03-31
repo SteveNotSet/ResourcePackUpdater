@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "resourcepackupdater",
+  "version": "${version}",
+  "name": "Resource Pack Updating Utility",
+  "description": "Updates a resource pack at game launch, or when requested.",
+  "authors": [
+    "Zbx1425"
+  ],
+  "contact": {
+    "homepage": "https://www.zbx1425.cn"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "cn.zbx1425.resourcepackupdater.ResourcePackUpdater"
+    ],
+    "modmenu": [
+      "cn.zbx1425.resourcepackupdater.ModMenuApiImpl"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.7",
+    "fabric": "*",
+    "minecraft": ">=1.17"
+  },
+  "mixins": [
+    "resourcepackupdater.mixins.json"
+  ]
+}
