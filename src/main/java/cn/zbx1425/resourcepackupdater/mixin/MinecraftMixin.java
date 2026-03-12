@@ -1,7 +1,6 @@
 package cn.zbx1425.resourcepackupdater.mixin;
 
 import cn.zbx1425.resourcepackupdater.ResourcePackUpdater;
-import cn.zbx1425.resourcepackupdater.ResourcePackUpdaterClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,13 +16,13 @@ public class MinecraftMixin {
 
     @Inject(at = @At("HEAD"), method = "reloadResourcePacks()Ljava/util/concurrent/CompletableFuture;")
     void reloadResourcePacks(CallbackInfoReturnable<CompletableFuture<Void>> cir) {
-        ResourcePackUpdaterClient.dispatchSyncWork();
-        ResourcePackUpdaterClient.modifyPackList();
+        ResourcePackUpdater.dispatchSyncWork();
+        ResourcePackUpdater.modifyPackList();
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/repository/PackRepository;openAllSelected()Ljava/util/List;"), method = "<init>")
     void ctor(GameConfig gameConfig, CallbackInfo ci) {
-        ResourcePackUpdaterClient.dispatchSyncWork();
-        ResourcePackUpdaterClient.modifyPackList();
+        ResourcePackUpdater.dispatchSyncWork();
+        ResourcePackUpdater.modifyPackList();
     }
 }

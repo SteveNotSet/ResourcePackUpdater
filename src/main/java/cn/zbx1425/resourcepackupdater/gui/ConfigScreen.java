@@ -2,7 +2,6 @@ package cn.zbx1425.resourcepackupdater.gui;
 
 import cn.zbx1425.resourcepackupdater.Config;
 import cn.zbx1425.resourcepackupdater.ResourcePackUpdater;
-import cn.zbx1425.resourcepackupdater.ResourcePackUpdaterClient;
 import cn.zbx1425.resourcepackupdater.gui.gl.GlHelper;
 import cn.zbx1425.resourcepackupdater.mappings.Text;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -75,8 +74,8 @@ public class ConfigScreen extends Screen {
         if (isShowingLog) {
             GlHelper.initGlStates();
             try {
-                ResourcePackUpdaterClient.GL_PROGRESS_SCREEN.setToException();
-                if (!ResourcePackUpdaterClient.GL_PROGRESS_SCREEN.shouldContinuePausing(false)) {
+                ResourcePackUpdater.GL_PROGRESS_SCREEN.setToException();
+                if (!ResourcePackUpdater.GL_PROGRESS_SCREEN.shouldContinuePausing(false)) {
                     isShowingLog = false;
                 }
             } catch (GlHelper.MinecraftStoppingException ignored) {

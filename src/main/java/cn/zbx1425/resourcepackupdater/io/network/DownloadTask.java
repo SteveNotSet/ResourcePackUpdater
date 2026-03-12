@@ -1,7 +1,6 @@
 package cn.zbx1425.resourcepackupdater.io.network;
 
 import cn.zbx1425.resourcepackupdater.ResourcePackUpdater;
-import cn.zbx1425.resourcepackupdater.ResourcePackUpdaterClient;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -93,7 +92,7 @@ public class DownloadTask {
                 .build();
         HttpResponse<InputStream> httpResponse;
         try {
-            httpResponse = ResourcePackUpdaterClient.HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
+            httpResponse = ResourcePackUpdater.HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
         } catch (InterruptedException ex) {
             throw new IOException(ex);
         }

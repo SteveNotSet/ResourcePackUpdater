@@ -87,7 +87,7 @@ public class Config {
                         .build();
                 HttpResponse<String> httpResponse;
                 try {
-                    httpResponse = ResourcePackUpdaterClient.HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    httpResponse = ResourcePackUpdater.HTTP_CLIENT.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                 } catch (InterruptedException ex) {
                     throw new IOException(ex);
                 }
