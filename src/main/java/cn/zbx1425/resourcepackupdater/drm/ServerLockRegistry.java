@@ -51,10 +51,13 @@ public class ServerLockRegistry {
     }
 
     public static boolean shouldRefuseProvidingFile(String resourcePath) {
+        // For Star River City, force enable packs regardless of incompletion or any locks
+        /*
         if (Objects.equals(resourcePath, "pack.mcmeta") || Objects.equals(resourcePath, "pack.png")) return false;
         if (lockAllSyncedPacks) return true;
         if (localServerLock == null) return false;
-        return !Objects.equals(localServerLock, remoteServerLock);
+        return !Objects.equals(localServerLock, remoteServerLock);*/
+        return false;
     }
 
     public static void onLoginInitiated() {
@@ -67,11 +70,8 @@ public class ServerLockRegistry {
 
     public static void onAfterSetServerLock() {
         if (lockAllSyncedPacks) {
-            Minecraft.getInstance().getToasts().addToast(new SystemToast(SystemToast.SystemToastId.PACK_LOAD_FAILURE,
-                    Text.literal("同步資源包不完整而未被采用"), Text.literal("您可按 F3+T 重試下載。如有錯誤請聯絡管理人員。")
-            ));
-            Minecraft.getInstance().getToasts().addToast(new SystemToast(SystemToast.SystemToastId.PACK_LOAD_FAILURE,
-                    Text.literal("Synced Resource Pack Incomplete and Thus not Used"), Text.literal("Press F3+T to download again. Ask the staff when error.")
+            Minecraft.getInstance().getToasts().addToast(new SystemToast(SystemToast.SystemToastIds.PACK_LOAD_FAILURE,
+                    Text.literal("同步资源包不完整"), Text.literal("您可按 F3+T 重试下载。如有错误请联络管理人员。")
             ));
         }
 
