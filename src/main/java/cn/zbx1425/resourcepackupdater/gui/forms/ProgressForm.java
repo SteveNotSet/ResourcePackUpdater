@@ -22,14 +22,14 @@ public class ProgressForm implements GlScreenForm {
 
         float barBegin = 0;
         float usableBarWidth = progressFormWidth - barBegin - 0;
-        float progressTextStart = progressFormWidth / 2 - GlHelper.getStringWidth("88%", 16) / 2;
-        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0x4435aa8e);
+        float progressTextStart = progressFormWidth / 2 - GlHelper.getStringWidth(String.format("%d%%", Math.round(primaryProgress * 100)), 16) / 2;
+        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0x4400a99d);
         GlHelper.drawString(progressTextStart, 0 + 10, 80, LINE_HEIGHT, 16,
-                String.format("%d%%", Math.round(primaryProgress * 100)), 0xff328a75, false, true);
+                String.format("%d%%", Math.round(primaryProgress * 100)), 0xff00a99d, false, true);
         GlHelper.end();
         GlHelper.begin(GlHelper.PRELOAD_FONT_TEXTURE);
         GlHelper.enableScissor(0, 0, usableBarWidth * primaryProgress, 30);
-        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0xff35aa8e);
+        GlHelper.blit(barBegin, 0, usableBarWidth, 30, 0xff00a99d);
         GlHelper.drawString(progressTextStart, 0 + 10, 80, LINE_HEIGHT, 16,
                 String.format("%d%%", Math.round(primaryProgress * 100)), 0xffffffff, false, true);
         GlHelper.end();
@@ -56,8 +56,8 @@ public class ProgressForm implements GlScreenForm {
         GlHelper.drawString(20, 195, progressFormWidth - 40, 30, 18,
                 monospace ? auxiliaryInfo.substring(1) : auxiliaryInfo, 0xff222222, monospace, false);
 
-        String escBtnHint = ResourcePackUpdater.CONFIG.sourceList.value.size() > 1 ? "Cancel / Use Another Source" : "Cancel";
-        GlHelper.drawString(20, progressFormHeight - 30, progressFormWidth - 40, 16, 16, "(" + escBtnHint + ": Hold ESC)", 0xff222222, false, true);
+        String escBtnHint = ResourcePackUpdater.CONFIG.sourceList.value.size() > 1 ? "取消下载 / 使用另一下载源" : "取消下载";
+        GlHelper.drawString(20, progressFormHeight - 20, progressFormWidth - 40, 16, 16, escBtnHint + ": 按住 ESC", 0xff222222, false, true);
 
         GlHelper.end();
     }

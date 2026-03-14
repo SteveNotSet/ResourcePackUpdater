@@ -104,14 +104,14 @@ public class GlProgressScreen implements ProgressReceiver {
         GlHelper.begin(PRELOAD_BACKGROUND_TEXTURE);
         Minecraft.getInstance().getTextureManager().getTexture(PRELOAD_BACKGROUND_TEXTURE).setFilter(true, false);
         float bgScale = Math.max(GlHelper.getWidth() / 16f, GlHelper.getHeight() / 9f);
-        float bgW = 16 * bgScale, bgH = 9 * bgScale;
+        float bgW = 16 * bgScale + 32, bgH = 9 * bgScale + 18;
         float bgX = (GlHelper.getWidth() - bgW) / 2, bgY = (GlHelper.getHeight() - bgH) / 2;
         GlHelper.blit(bgX, bgY, bgW, bgH, 0, 0, 1, 1, 0xffffffff);
         GlHelper.end();
 
         GlHelper.begin(GlHelper.PRELOAD_FONT_TEXTURE);
         GlHelper.drawShadowString(GlHelper.getWidth() - 10 - 80, GlHelper.getHeight() - 10 - 16, 80, 20, 16,
-                "v" + ResourcePackUpdater.MOD_VERSION, 0xffffff00, false, true);
+                "版本 " + ResourcePackUpdater.MOD_VERSION, 0xffffff00, false, true);
         GlHelper.end();
 
         GlHelper.begin(PRELOAD_HEADER_TEXTURE);

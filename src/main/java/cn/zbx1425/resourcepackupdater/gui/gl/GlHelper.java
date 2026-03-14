@@ -48,7 +48,7 @@ public class GlHelper {
     }
 
     public static final ResourceLocation PRELOAD_FONT_TEXTURE =
-            new ResourceLocation(ResourcePackUpdater.MOD_ID, "textures/font/roboto.png");
+            new ResourceLocation(ResourcePackUpdater.MOD_ID, "textures/font/cantarell.png");
     public static final SimpleFont preloadFont = new SimpleFont(PRELOAD_FONT_TEXTURE);
 
     private static BufferBuilder bufferBuilder;
@@ -111,8 +111,8 @@ public class GlHelper {
             } else if (chr == '\r') {
                 // Ignore CR
             } else if (chr == '\t') {
-                // Align to 8 spaces
-                float alignToPixels = (preloadFont.spaceWidthPl + CHAR_SPACING) * 8 * fontSize;
+                // Align to 10 spaces
+                float alignToPixels = (preloadFont.spaceWidthPl + CHAR_SPACING) * 10 * fontSize;
                 x = (float) (Math.ceil((x - x1) / alignToPixels) * alignToPixels + x1);
             } else if (chr == ' ') {
                 x += (preloadFont.spaceWidthPl + CHAR_SPACING) * fontSize;
@@ -152,8 +152,8 @@ public class GlHelper {
             } else if (chr == '\r') {
                 // Ignore CR
             } else if (chr == '\t') {
-                // Align to 8 spaces
-                float alignToPixels = (preloadFont.spaceWidthPl + CHAR_SPACING) * 8 * fontSize;
+                // Align to 10 spaces
+                float alignToPixels = (preloadFont.spaceWidthPl + CHAR_SPACING) * 10 * fontSize;
                 x = (float) (Math.ceil(x / alignToPixels) * alignToPixels);
             } else if (chr == ' ') {
                 x += (preloadFont.spaceWidthPl + CHAR_SPACING) * fontSize;

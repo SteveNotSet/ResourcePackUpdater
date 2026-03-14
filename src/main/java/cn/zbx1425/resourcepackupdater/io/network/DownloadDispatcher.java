@@ -45,7 +45,7 @@ public class DownloadDispatcher {
                         task.runBlocking(target.get());
                         if (task.failedAttempts > 0) {
                             delayedProgresses.add(() -> {
-                                progressReceiver.printLog(String.format("Downloading files ... (Retry %d succeed)",
+                                progressReceiver.printLog(String.format("正在下载文件……（第 %d 次尝试）",
                                         task.failedAttempts));
                             });
                         }
@@ -54,9 +54,9 @@ public class DownloadDispatcher {
                         task.failedAttempts++;
                         if (task.failedAttempts < MAX_RETRIES) {
                             delayedProgresses.add(() -> {
-                                progressReceiver.printLog(String.format("Retry (%d/%d) for %s due to error:",
+                                progressReceiver.printLog(String.format("因以下错误，%s 将进行第（%d/%d）次尝试：",
                                         task.failedAttempts, MAX_RETRIES, task.fileName));
-                                progressReceiver.printLog(String.format("Retry %d: %s", task.failedAttempts, ex.toString()));
+                                progressReceiver.printLog(String.format("第 %d 次重试：%s", task.failedAttempts, ex.toString()));
                             });
                         } else {
                             throw ex;
@@ -91,17 +91,17 @@ public class DownloadDispatcher {
             lastSummaryTime = currentTime;
             lastSummaryBytes = downloadedBytes;
         }
-        String message = String.format(": % 5.2f MiB / % 5.2f MiB; %5d KiB/s",
+        String message = String.format(": %.2f MiB / %.2f MiB; %d KiB/s",
                 downloadedBytes / 1048576.0, totalBytes / 1048576.0, summaryBytesPerSecond / 1024);
         progressReceiver.setProgress(downloadedBytes * 1f / totalBytes, 0);
 
-        String runningProgress = incompleteTasks.size() + " Files Remaining\n" +
+        String runningProgress = "剩余 " + incompleteTasks.size() + " 个文件\n" +
                 String.join("\n", runningTasks.stream()
                 .map(task -> "  " + (
-                        task.totalBytes == 0 ? "WAIT" :
+                        task.totalBytes == 0 ? "等待" :
                         String.format("%.1f%%", task.downloadedBytes * 100f / task.totalBytes)
                 ) + "\t"
-                + (task.failedAttempts > 0 ? "(RETRY " + task.failedAttempts + ") " : "")
+                + (task.failedAttempts > 0 ? "（第 " + task.failedAttempts + "次重试）" : "")
                 + task.fileName)
                 .toList());
         progressReceiver.setInfo(runningProgress, message);

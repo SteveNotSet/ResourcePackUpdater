@@ -30,14 +30,14 @@ public class ConfigScreen extends Screen {
         final int PADDING = 10;
         int btnWidthOuter = (width - PADDING * 2) / 2;
         int btnWidthInner = btnWidthOuter - PADDING * 2;
-        Button btnShowLog = Button.builder(Text.translatable("Show Logs from Last Run"), (btn) -> {
+        Button btnShowLog = Button.builder(Text.translatable("显示上次运行的日志"), (btn) -> {
             isShowingLog = true;
         }).bounds(PADDING + PADDING, 40, btnWidthInner, 20).build();
-        Button btnReload = Button.builder(Text.translatable("Update & Reload"), (btn) -> {
+        Button btnReload = Button.builder(Text.translatable("更新并重新加载资源包"), (btn) -> {
             assert minecraft != null;
             minecraft.reloadResourcePacks();
         }).bounds(PADDING + btnWidthOuter + PADDING, 40, btnWidthInner, 20).build();
-        Button btnReturn = Button.builder(Text.translatable("Return"), (btn) -> {
+        Button btnReturn = Button.builder(Text.translatable("返回"), (btn) -> {
             assert minecraft != null;
             minecraft.setScreen(null);
         }).bounds(PADDING + btnWidthOuter + PADDING, height - 40, btnWidthInner, 20).build();
@@ -86,7 +86,7 @@ public class ConfigScreen extends Screen {
             guiGraphics.fillGradient(0, 0, this.width, this.height, 0xff014e7c, 0xff02142a);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             guiGraphics.blit(GlProgressScreen.PRELOAD_HEADER_TEXTURE, 10, 10, 256, 16, 0, 0, 512, 32, 512, 32);
-            guiGraphics.drawString(font, "Source Servers:", 20, 76, 0xFFFFFFFF, true);
+            guiGraphics.drawString(font, "下载源服务器：", 20, 76, 0xFFFFFFFF, true);
             guiGraphics.drawString(font, "https://www.zbx1425.cn", 20, height - 40, 0xFFFFFFFF, true);
             super.render(guiGraphics, mouseX, mouseY, delta);
         }
