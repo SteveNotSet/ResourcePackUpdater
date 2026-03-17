@@ -132,16 +132,10 @@ public class Config {
     }
 
     private void addBuiltinSources() {
-        /*
         sourceList.value.add(0, new SourceProperty(
-            "MTR Let's Play (HK, Primary)",
-            "https://mc.zbx1425.cn/jlp-srp", true, true, true
+            "MTR 星海市 极简包（无列车）",
+            "https://res.xhcity.top/shrinked-packs/raw-only-pack/", true, false, true
         ));
-        sourceList.value.add(0, new SourceProperty(
-            "MTR Let's Play (CN, Mirror)",
-            "https://seu.complexstudio.net/jlp-srp", true, false, true
-        ));
-        */
     }
 
     public String getPackBaseDir() {

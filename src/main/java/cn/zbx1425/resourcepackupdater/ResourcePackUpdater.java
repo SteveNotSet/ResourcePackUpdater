@@ -56,40 +56,43 @@ public class ResourcePackUpdater implements ModInitializer {
     public void onInitialize() {
         MOD_VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).get()
                 .getMetadata().getVersion().getFriendlyString();
-        try {
-            CONFIG.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void dispatchSyncWork() {
         GlHelper.initGlStates();
-
+        boolean isConfigLoadFailed = false;
         while (true) {
+            try {
+                CONFIG.load();
+            } catch (IOException e) {
+                LOGGER.error("Failed to load config", e);
+                isConfigLoadFailed = true;
+            }
             Dispatcher syncDispatcher = new Dispatcher();
-            if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
-                || ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
-                if (ResourcePackUpdater.CONFIG.sourceList.value.size() > 1) {
-                    ResourcePackUpdater.GL_PROGRESS_SCREEN.resetToSelectSource();
-                    try {
-                        while (ResourcePackUpdater.GL_PROGRESS_SCREEN.shouldContinuePausing(true)) {
-                            Thread.sleep(50);
+            if (!isConfigLoadFailed) {
+                if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
+                        || ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
+                    if (ResourcePackUpdater.CONFIG.sourceList.value.size() > 1) {
+                        ResourcePackUpdater.GL_PROGRESS_SCREEN.resetToSelectSource();
+                        try {
+                            while (ResourcePackUpdater.GL_PROGRESS_SCREEN.shouldContinuePausing(true)) {
+                                Thread.sleep(50);
+                            }
+                        } catch (GlHelper.MinecraftStoppingException ignored) {
+                            ServerLockRegistry.lockAllSyncedPacks = true;
+                            break;
+                        } catch (Exception ignored) {
                         }
-                    } catch (GlHelper.MinecraftStoppingException ignored) {
-                        ServerLockRegistry.lockAllSyncedPacks = true;
-                        break;
-                    } catch (Exception ignored) {
+                    } else if (ResourcePackUpdater.CONFIG.sourceList.value.size() == 1) {
+                        ResourcePackUpdater.CONFIG.selectedSource.value = ResourcePackUpdater.CONFIG.sourceList.value.get(0);
+                        ResourcePackUpdater.CONFIG.selectedSource.isFromLocal = true;
+                    } else {
+                        ResourcePackUpdater.CONFIG.selectedSource.value = new Config.SourceProperty(
+                                "NOT CONFIGURED",
+                                "",
+                                false, false, true
+                        );
                     }
-                } else if (ResourcePackUpdater.CONFIG.sourceList.value.size() == 1) {
-                    ResourcePackUpdater.CONFIG.selectedSource.value = ResourcePackUpdater.CONFIG.sourceList.value.get(0);
-                    ResourcePackUpdater.CONFIG.selectedSource.isFromLocal = true;
-                } else {
-                    ResourcePackUpdater.CONFIG.selectedSource.value = new Config.SourceProperty(
-                            "NOT CONFIGURED",
-                            "",
-                            false, false, true
-                    );
                 }
             }
 
