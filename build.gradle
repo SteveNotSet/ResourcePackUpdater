@@ -104,7 +104,7 @@ tasks.withType(JavaCompile).configureEach {
 
 task setupFiles() {
     download {
-        src "https://github.com/jonafanho/Minecraft-Mappings/archive/refs/heads/1.${minecraft_main_version}${is_1_19_3 ? ".3" : ""}.zip"
+        src "https://res.xhcity.top/other-resources/1.20.zip"
         dest "src/main/java/cn/zbx1425/resourcepackupdater/mappings/files.zip"
         overwrite true
     }
