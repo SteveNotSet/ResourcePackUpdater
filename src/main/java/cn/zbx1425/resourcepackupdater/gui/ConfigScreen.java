@@ -46,21 +46,29 @@ public class ConfigScreen extends Screen {
         addRenderableWidget(btnReturn);
 
         int btnY = 90;
-        for (Config.SourceProperty source : ResourcePackUpdater.CONFIG.sourceList.value) {
-            Button btnUseSource = Button.builder(Text.translatable(source.name), (btn) -> {
-                ResourcePackUpdater.CONFIG.selectedSource.value = source;
-                try {
-                    ResourcePackUpdater.CONFIG.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                updateBtnEnable();
-            }).bounds(PADDING + PADDING, btnY, btnWidthInner, 20).build();
-            sourceButtons.put(source, btnUseSource);
-            btnY += 20;
-            addRenderableWidget(btnUseSource);
+        if (ResourcePackUpdater.hasValidConfig) {
+            for (Config.SourceProperty source : ResourcePackUpdater.CONFIG.sourceList.value) {
+                Button btnUseSource = Button.builder(Text.translatable(source.name), (btn) -> {
+                    ResourcePackUpdater.CONFIG.selectedSource.value = source;
+                    try {
+                        ResourcePackUpdater.CONFIG.save();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    updateBtnEnable();
+                }).bounds(PADDING + PADDING, btnY, btnWidthInner, 20).build();
+                sourceButtons.put(source, btnUseSource);
+                btnY += 20;
+                addRenderableWidget(btnUseSource);
+            }
+            updateBtnEnable();
+        } else {
+            Button btnNoSource = Button.builder(Text.translatable("获取配置失败！请检查日志。"), (btn) -> {
+                }).bounds(PADDING + PADDING, btnY, btnWidthInner, 20).bounds(PADDING + PADDING,
+                btnY, btnWidthInner, 20).build();
+            btnNoSource.active = false;
+            addRenderableWidget(btnNoSource);
         }
-        updateBtnEnable();
     }
 
     private void updateBtnEnable() {

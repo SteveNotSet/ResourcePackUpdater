@@ -38,6 +38,8 @@ public class ResourcePackUpdater implements ModInitializer {
     public static final JsonParser JSON_PARSER = new JsonParser();
     public static final HttpClient HTTP_CLIENT;
 
+    public static Boolean hasValidConfig = false;
+
     static {
         // PREVENTS HOST VALIDATION
         final Properties props = System.getProperties();
@@ -58,41 +60,54 @@ public class ResourcePackUpdater implements ModInitializer {
                 .getMetadata().getVersion().getFriendlyString();
     }
 
+    public static void loadConfig() {
+        try {
+            CONFIG.load();
+            hasValidConfig = true;
+        } catch (IOException e) {
+            LOGGER.error("Failed to load config", e);
+            hasValidConfig = false;
+            ServerLockRegistry.lockAllSyncedPacks = true;
+            GL_PROGRESS_SCREEN.reset();
+            GL_PROGRESS_SCREEN.setToException();
+            GL_PROGRESS_SCREEN.printLog("资源同步实用程序（星海专版） v" + ResourcePackUpdater.MOD_VERSION + " © Zbx1425, www.zbx1425.cn");
+            GL_PROGRESS_SCREEN.printLog("无法获取远程配置文件！");
+            GL_PROGRESS_SCREEN.setException(e);
+            GL_PROGRESS_SCREEN.redrawScreen(true);
+        }
+    }
     public static void dispatchSyncWork() {
         GlHelper.initGlStates();
-        boolean isConfigLoadFailed = false;
+
         while (true) {
-            try {
-                CONFIG.load();
-            } catch (IOException e) {
-                LOGGER.error("Failed to load config", e);
-                isConfigLoadFailed = true;
-            }
             Dispatcher syncDispatcher = new Dispatcher();
-            if (!isConfigLoadFailed) {
-                if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
+            if (!hasValidConfig) {
+                loadConfig();
+            }
+            if (!hasValidConfig) {
+                break;
+            } else if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
                         || ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
-                    if (ResourcePackUpdater.CONFIG.sourceList.value.size() > 1) {
-                        ResourcePackUpdater.GL_PROGRESS_SCREEN.resetToSelectSource();
-                        try {
-                            while (ResourcePackUpdater.GL_PROGRESS_SCREEN.shouldContinuePausing(true)) {
-                                Thread.sleep(50);
-                            }
-                        } catch (GlHelper.MinecraftStoppingException ignored) {
-                            ServerLockRegistry.lockAllSyncedPacks = true;
-                            break;
-                        } catch (Exception ignored) {
+                if (ResourcePackUpdater.CONFIG.sourceList.value.size() > 1) {
+                    ResourcePackUpdater.GL_PROGRESS_SCREEN.resetToSelectSource();
+                    try {
+                        while (ResourcePackUpdater.GL_PROGRESS_SCREEN.shouldContinuePausing(true)) {
+                            Thread.sleep(50);
                         }
-                    } else if (ResourcePackUpdater.CONFIG.sourceList.value.size() == 1) {
-                        ResourcePackUpdater.CONFIG.selectedSource.value = ResourcePackUpdater.CONFIG.sourceList.value.get(0);
-                        ResourcePackUpdater.CONFIG.selectedSource.isFromLocal = true;
-                    } else {
-                        ResourcePackUpdater.CONFIG.selectedSource.value = new Config.SourceProperty(
-                                "NOT CONFIGURED",
-                                "",
-                                false, false, true
-                        );
+                    } catch (GlHelper.MinecraftStoppingException ignored) {
+                        ServerLockRegistry.lockAllSyncedPacks = true;
+                        break;
+                    } catch (Exception ignored) {
                     }
+                } else if (ResourcePackUpdater.CONFIG.sourceList.value.size() == 1) {
+                    ResourcePackUpdater.CONFIG.selectedSource.value = ResourcePackUpdater.CONFIG.sourceList.value.get(0);
+                    ResourcePackUpdater.CONFIG.selectedSource.isFromLocal = true;
+                } else {
+                    ResourcePackUpdater.CONFIG.selectedSource.value = new Config.SourceProperty(
+                            "NOT CONFIGURED",
+                            "",
+                            false, false, true
+                    );
                 }
             }
 

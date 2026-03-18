@@ -50,8 +50,8 @@ public class RemoteMetadata {
             }
         } catch (Exception e) {
             cb.printLog("Cannot decode metadata.sha1, and this is its content:");
-            cb.printLog(metaString);
-            cb.printLog("Metadata string ends here.");
+            cb.printMultiLineLog(metaString);
+            cb.printLog("--[EOF]--");
             throw e;
         }
     }
