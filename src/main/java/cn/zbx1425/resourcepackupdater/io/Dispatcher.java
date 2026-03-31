@@ -69,7 +69,7 @@ public class Dispatcher {
                     cb.printLog("所有文件均已为最新。");
                     cb.setProgress(1, 1);
                     cb.printLog("");
-                    cb.printLog("完成啦！谢谢。");
+                    cb.printLog("Ciallo～(∠·ω< )⌒★");
                     return true;
                 } else {
                     // We haven't fetched the full metadata yet, do it now.
@@ -125,7 +125,7 @@ public class Dispatcher {
             cb.setProgress(1, 1);
             cb.printLog("");
             remoteMetadata.endDownloads(cb);
-            cb.printLog("完成啦！谢谢。");
+            cb.printLog("Ciallo～(∠·ω< )⌒★");
             return true;
         } catch (GlHelper.MinecraftStoppingException ex) {
             throw ex;
