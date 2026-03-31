@@ -25,9 +25,7 @@ import java.util.concurrent.Executors;
 public class ResourcePackUpdater implements ModInitializer {
 
     public static final String MOD_ID = "resourcepackupdater";
-
     public static final Logger LOGGER = LogManager.getLogger("ResourcePackUpdater");
-
     public static String MOD_VERSION = "";
 
     public static final GlProgressScreen GL_PROGRESS_SCREEN = new GlProgressScreen();
@@ -39,6 +37,8 @@ public class ResourcePackUpdater implements ModInitializer {
 
     public static final JsonParser JSON_PARSER = new JsonParser();
     public static final HttpClient HTTP_CLIENT;
+
+    public static Boolean hasValidConfig = false;
 
     static {
         // PREVENTS HOST VALIDATION
@@ -58,20 +58,36 @@ public class ResourcePackUpdater implements ModInitializer {
     public void onInitialize() {
         MOD_VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).get()
                 .getMetadata().getVersion().getFriendlyString();
-        try {
-            CONFIG.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
+    public static void loadConfig() {
+        try {
+            CONFIG.load();
+            hasValidConfig = true;
+        } catch (IOException e) {
+            LOGGER.error("Failed to load config", e);
+            hasValidConfig = false;
+            ServerLockRegistry.lockAllSyncedPacks = true;
+            GL_PROGRESS_SCREEN.reset();
+            GL_PROGRESS_SCREEN.setToException();
+            GL_PROGRESS_SCREEN.printLog("资源同步实用程序（星海专版） v" + ResourcePackUpdater.MOD_VERSION + " © Zbx1425, www.zbx1425.cn");
+            GL_PROGRESS_SCREEN.printLog("无法获取远程配置文件！");
+            GL_PROGRESS_SCREEN.setException(e);
+            GL_PROGRESS_SCREEN.redrawScreen(true);
+        }
+    }
     public static void dispatchSyncWork() {
         GlHelper.initGlStates();
 
         while (true) {
             Dispatcher syncDispatcher = new Dispatcher();
-            if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
-                || ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
+            if (!hasValidConfig) {
+                loadConfig();
+            }
+            if (!hasValidConfig) {
+                break;
+            } else if (ResourcePackUpdater.CONFIG.selectedSource.value == null // TODO how did we get here?
+                        || ResourcePackUpdater.CONFIG.selectedSource.value.baseUrl.isEmpty()) {
                 if (ResourcePackUpdater.CONFIG.sourceList.value.size() > 1) {
                     ResourcePackUpdater.GL_PROGRESS_SCREEN.resetToSelectSource();
                     try {
